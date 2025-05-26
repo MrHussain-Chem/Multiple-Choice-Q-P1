@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Chemistry Paper 1 - Advanced Multiple Choice Quiz</title>
+    
+    <!-- Google Analytics -->
+    <!-- REPLACE 'GA_MEASUREMENT_ID' BELOW WITH YOUR ACTUAL GOOGLE ANALYTICS ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .exam-container {
+            background: white;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .exam-header {
+            background: #1a237e;
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+        }
+        
+        .exam-header h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .exam-info {
+            background: #e8eaf6;
+            padding: 20px 30px;
+            border-bottom: 2px solid #1a237e;
+        }
+        
+        .exam-info h2 {
+            color: #1a237e;
+            margin-bottom: 15px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .timer-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #d32f2f;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .timer-warning {
+            background: #ff9800 !important;
+            animation: pulse 2s infinite;
+        }
+        
+        .timer-critical {
+            background: #f44336 !important;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .start-screen {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .start-btn {
+            background: #1a237e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .start-btn:hover {
+            background: #303f9f;
+        }
+        
+        .exam-content {
+            padding: 30px;
+            display: none;
+        }
+        
+        .exam-content.active {
+            display: block;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #1a237e;
+        }
+        
+        .question-marks {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .question-text {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .options {
+            margin-left: 20px;
+        }
+        
+        .option {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        
+        .option label {
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        
+        .controls {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 20px;
+            border-top: 2px solid #1a237e;
+            text-align: center;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn {
+            background: #1a237e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #303f9f;
+        }
+        
+        .btn-secondary {
+            background: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #888;
+        }
+        
+        .results {
+            padding: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        .results.active {
+            display: block;
+        }
+        
+        .score-display {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #1a237e;
+        }
+        
+        .grade-display {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .correct {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #1a237e;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .data-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-container">
+        <div class="exam-header">
+            <h1>AS Level Chemistry</h1>
+            <p>Paper 1 - Advanced Multiple Choice Quiz</p>
+        </div>
+        
+        <div class="exam-info">
+            <h2>Instructions to Students</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span><strong>Time allowed:</strong></span>
+                    <span>90 minutes</span>
+                </div>
+                <div class="info-item">
+                    <span><strong>Total marks:</strong></span>
+                    <span>80 marks</span>
+                </div>
+                <div class="info-item">
+                    <span><strong>Number of questions:</strong></span>
+                    <span>80 questions</span>
+                </div>
+                <div class="info-item">
+                    <span><strong>Question type:</strong></span>
+                    <span>Multiple choice</span>
+                </div>
+            </div>
+            <p><strong>Answer all questions.</strong> For each question, select the best answer from the options given.</p>
+            <p>Each question is worth 1 mark. There is no negative marking.</p>
+            <p><strong>Note:</strong> This quiz uses the actual June 2024 AQA AS Chemistry grade boundaries for authentic assessment.</p>
+        </div>
+        
+        <div class="timer-display" id="timerDisplay">
+            Time Remaining: 90:00
+        </div>
+        
+        <div class="start-screen" id="startScreen">
+            <h2>Ready to Begin?</h2>
+            <p>You have 90 minutes to complete 80 challenging multiple choice questions.</p>
+            <p>These questions are designed to match the style and difficulty of actual AS Chemistry past papers.</p>
+            <p>Once you start, the timer will begin and cannot be paused.</p>
+            <br>
+            <button class="start-btn" id="startExamBtn">Start Exam</button>
+        </div>
+        
+        <div class="exam-content" id="examContent">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="questionsContainer">
+                <!-- Questions will be inserted here -->
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Exam Complete</h2>
+            <div class="score-display" id="scoreDisplay"></div>
+            <div class="grade-display" id="gradeDisplay"></div>
+            <button class="btn" onclick="showReview()">Review Answers</button>
+            <button class="btn btn-secondary" onclick="resetExam()">Retake Exam</button>
+        </div>
+        
+        <div class="controls" id="controls" style="display: none;">
+            <button class="btn" id="submitExam">Submit Exam</button>
+            <button class="btn btn-secondary" onclick="resetExam()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // Atomic Structure & Mass Spectrometry (15 questions)
+            {
+                number: 1,
+                text: "A mass spectrum shows peaks at m/z values of 78, 79, 80, 81, and 82 with relative abundances of 12:50:100:82:12. This spectrum is most likely from which compound?",
+                marks: 1,
+                options: [
+                    "A. Br₂ (bromine has isotopes ⁷⁹Br and ⁸¹Br)",
+                    "B. HBr (hydrogen bromide)",
+                    "C. C₆H₆ (benzene)",
+                    "D. C₂H₄Br₂ (1,2-dibromoethane)"
+                ],
+                correct: 0
+            },
+            {
+                number: 2,
+                text: "The successive ionisation energies (in kJ mol⁻¹) for element X are: 1000, 2250, 3360, 4560, 7010, 8410, 27100, 31700. Element X is in which group of the periodic table?",
+                marks: 1,
+                options: [
+                    "A. Group 2",
+                    "B. Group 3", 
+                    "C. Group 6",
+                    "D. Group 7"
+                ],
+                correct: 2
+            },
+            {
+                number: 3,
+                text: "In Time of Flight mass spectrometry, ions with m/z = 32 take 2.5 × 10⁻⁵ s to reach the detector. How long would ions with m/z = 18 take to reach the detector under identical conditions?",
+                marks: 1,
+                options: [
+                    "A. 1.9 × 10⁻⁵ s",
+                    "B. 2.1 × 10⁻⁵ s",
+                    "C. 3.3 × 10⁻⁵ s",
+                    "D. 4.4 × 10⁻⁵ s"
+                ],
+                correct: 0
+            },
+            {
+                number: 4,
+                text: "Which electronic configuration represents an atom that would have the highest second ionisation energy?",
+                marks: 1,
+                options: [
+                    "A. 1s² 2s²",
+                    "B. 1s² 2s² 2p¹",
+                    "C. 1s² 2s² 2p⁶ 3s¹",
+                    "D. 1s² 2s² 2p⁶ 3s²"
+                ],
+                correct: 2
+            },
+            {
+                number: 5,
+                text: "An element has a first ionisation energy of 1680 kJ mol⁻¹ and a second ionisation energy of 3380 kJ mol⁻¹. The most likely identity of this element is:",
+                marks: 1,
+                options: [
+                    "A. Fluorine (F)",
+                    "B. Neon (Ne)",
+                    "C. Sodium (Na)",
+                    "D. Magnesium (Mg)"
+                ],
+                correct: 1
+            },
+            {
+                number: 6,
+                text: "In the mass spectrum of CHCl₃, how many peaks would be observed for the molecular ion region, and what would be their approximate relative intensities?",
+                marks: 1,
+                options: [
+                    "A. 2 peaks in ratio 3:1",
+                    "B. 3 peaks in ratio 9:6:1",
+                    "C. 4 peaks in ratio 27:27:9:1",
+                    "D. 8 peaks with complex ratios"
+                ],
+                correct: 2
+            },
+            {
+                number: 7,
+                text: "The atomic radius of Na⁺ is smaller than that of F⁻ because:",
+                marks: 1,
+                options: [
+                    "A. Na⁺ has fewer electrons than F⁻",
+                    "B. Na⁺ has more protons than F⁻ but the same number of electrons",
+                    "C. F⁻ has more electron-electron repulsion",
+                    "D. Both B and C are correct"
+                ],
+                correct: 3
+            },
+            {
+                number: 8,
+                text: "Which species has the same number of electrons as Ar but a different nuclear charge?",
+                marks: 1,
+                options: [
+                    "A. K⁺ only",
+                    "B. Ca²⁺ only", 
+                    "C. S²⁻ only",
+                    "D. All of K⁺, Ca²⁺, and S²⁻"
+                ],
+                correct: 3
+            },
+            {
+                number: 9,
+                text: "The first ionisation energy decreases from F to I in Group 7 because:",
+                marks: 1,
+                options: [
+                    "A. Nuclear charge decreases",
+                    "B. Shielding effect increases more than nuclear charge",
+                    "C. Atomic radius decreases",
+                    "D. Electron affinity increases"
+                ],
+                correct: 1
+            },
+            {
+                number: 10,
+                text: "In electron impact ionisation for mass spectrometry, which statement is correct?",
+                marks: 1,
+                options: [
+                    "A. Electrons are removed from molecules, creating positive ions",
+                    "B. High-energy electrons bombard the sample, knocking out electrons",
+                    "C. The molecular ion peak shows the relative molecular mass",
+                    "D. All of the above statements are correct"
+                ],
+                correct: 3
+            },
+            {
+                number: 11,
+                text: "The element with electronic configuration [Ne] 3s² 3p³ would be expected to have:",
+                marks: 1,
+                options: [
+                    "A. Lower first ionisation energy than sulfur",
+                    "B. Higher first ionisation energy than silicon",
+                    "C. Lower first ionisation energy than aluminium",
+                    "D. Higher first ionisation energy than chlorine"
+                ],
+                correct: 1
+            },
+            {
+                number: 12,
+                text: "A compound has molecular ion peaks at m/z = 94 and 96 in the ratio 3:1. This pattern suggests the presence of:",
+                marks: 1,
+                options: [
+                    "A. One bromine atom (⁷⁹Br:⁸¹Br = 1:1)",
+                    "B. One chlorine atom (³⁵Cl:³⁷Cl = 3:1)",
+                    "C. Two chlorine atoms",
+                    "D. Carbon-13 isotope"
+                ],
+                correct: 1
+            },
+            {
+                number: 13,
+                text: "Which factor has the greatest effect on the first ionisation energy within a period?",
+                marks: 1,
+                options: [
+                    "A. Increasing nuclear charge",
+                    "B. Decreasing atomic radius",
+                    "C. Electron-electron repulsion",
+                    "D. Orbital type (s, p, d)"
+                ],
+                correct: 0
+            },
+            {
+                number: 14,
+                text: "The abundance of the M+2 peak relative to the molecular ion peak in the mass spectrum of C₂H₄Cl₂ is approximately:",
+                marks: 1,
+                options: [
+                    "A. 24%",
+                    "B. 33%",
+                    "C. 65%",
+                    "D. 100%"
+                ],
+                correct: 1
+            },
+            {
+                number: 15,
+                text: "Which statement about successive ionisation energies is correct?",
+                marks: 1,
+                options: [
+                    "A. They always increase by the same amount",
+                    "B. Large jumps occur when electrons are removed from inner shells",
+                    "C. They are independent of electronic configuration",
+                    "D. They decrease as more electrons are removed"
+                ],
+                correct: 1
+            },
+
+            // Amount of Substance & Calculations (15 questions)
+            {
+                number: 16,
+                text: "A hydrocarbon contains 85.7% carbon by mass. If its relative molecular mass is 42, what is its molecular formula?",
+                marks: 1,
+                options: [
+                    "A. C₂H₄",
+                    "B. C₃H₆",
+                    "C. C₄H₈",
+                    "D. C₅H₁₀"
+                ],
+                correct: 1
+            },
+            {
+                number: 17,
+                text: "In the reaction 2Al + Fe₂O₃ → Al₂O₃ + 2Fe, if 5.4 g of aluminium reacts with excess iron(III) oxide, what mass of iron is produced? (Ar: Al = 27, Fe = 56)",
+                marks: 1,
+                options: [
+                    "A. 11.2 g",
+                    "B. 22.4 g",
+                    "C. 33.6 g",
+                    "D. 44.8 g"
+                ],
+                correct: 1
+            },
+            {
+                number: 18,
+                text: "A solution contains 0.1 mol dm⁻³ of Na₂SO₄. What is the concentration of SO₄²⁻ ions in mol dm⁻³?",
+                marks: 1,
+                options: [
+                    "A. 0.05",
+                    "B. 0.1", 
+                    "C. 0.2",
+                    "D. 0.3"
+                ],
+                correct: 1
+            },
+            {
+                number: 19,
+                text: "The percentage yield when 12 g of product is obtained from a reaction with a theoretical yield of 16 g is:",
+                marks: 1,
+                options: [
+                    "A. 25%",
+                    "B. 33%",
+                    "C. 67%",
+                    "D. 75%"
+                ],
+                correct: 3
+            },
+            {
+                number: 20,
+                text: "What volume of 0.2 mol dm⁻³ HCl is needed to neutralise 25 cm³ of 0.15 mol dm⁻³ Ba(OH)₂?",
+                marks: 1,
+                options: [
+                    "A. 18.75 cm³",
+                    "B. 25 cm³",
+                    "C. 37.5 cm³",
+                    "D. 50 cm³"
+                ],
+                correct: 2
+            },
+            {
+                number: 21,
+                text: "A compound has the molecular formula C₄H₈O₂ and contains 54.5% carbon by mass. Which statement is correct?",
+                marks: 1,
+                options: [
+                    "A. The empirical formula is C₂H₄O",
+                    "B. The molecular mass is 88",
+                    "C. The percentage of oxygen is 36.4%",
+                    "D. All of the above are correct"
+                ],
+                correct: 3
+            },
+            {
+                number: 22,
+                text: "In the balanced equation: aFe + bH₂SO₄ → cFe₂(SO₄)₃ + dH₂, the values of a, b, c, d are:",
+                marks: 1,
+                options: [
+                    "A. 2, 3, 1, 3",
+                    "B. 3, 6, 1, 3",
+                    "C. 6, 9, 3, 9",
+                    "D. 1, 3, 1, 3"
+                ],
+                correct: 0
+            },
+            {
+                number: 23,
+                text: "The atom economy for producing ethanol from glucose (C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂) is:",
+                marks: 1,
+                options: [
+                    "A. 51.1%",
+                    "B. 25.6%",
+                    "C. 48.9%",
+                    "D. 74.4%"
+                ],
+                correct: 0
+            },
+            {
+                number: 24,
+                text: "How many molecules are present in 0.25 mol of CO₂?",
+                marks: 1,
+                options: [
+                    "A. 1.51 × 10²³",
+                    "B. 3.01 × 10²³",
+                    "C. 6.02 × 10²³",
+                    "D. 2.41 × 10²⁴"
+                ],
+                correct: 0
+            },
+            {
+                number: 25,
+                text: "A gas occupies 240 cm³ at STP. How many moles of gas are present?",
+                marks: 1,
+                options: [
+                    "A. 0.0107 mol",
+                    "B. 0.107 mol",
+                    "C. 1.07 mol",
+                    "D. 10.7 mol"
+                ],
+                correct: 0
+            },
+            {
+                number: 26,
+                text: "In the titration equation: n₁M₁V₁ = n₂M₂V₂, what does n represent?",
+                marks: 1,
+                options: [
+                    "A. Number of moles",
+                    "B. Stoichiometric coefficient",
+                    "C. Normality",
+                    "D. Avogadro's number"
+                ],
+                correct: 1
+            },
+            {
+                number: 27,
+                text: "The empirical formula of a compound with 32.4% Na, 22.5% S, and 45.1% O is:",
+                marks: 1,
+                options: [
+                    "A. NaSO₃",
+                    "B. Na₂SO₃",
+                    "C. Na₂SO₄",
+                    "D. NaHSO₄"
+                ],
+                correct: 1
+            },
+            {
+                number: 28,
+                text: "If 2.3 g of ethanol (C₂H₅OH) is completely burned, what volume of CO₂ is produced at STP? (Mr of ethanol = 46)",
+                marks: 1,
+                options: [
+                    "A. 1.12 dm³",
+                    "B. 2.24 dm³",
+                    "C. 3.36 dm³",
+                    "D. 4.48 dm³"
+                ],
+                correct: 1
+            },
+            {
+                number: 29,
+                text: "The concentration of H⁺ ions in a solution containing 0.1 mol dm⁻³ H₂SO₄ is:",
+                marks: 1,
+                options: [
+                    "A. 0.1 mol dm⁻³",
+                    "B. 0.2 mol dm⁻³",
+                    "C. 0.05 mol dm⁻³",
+                    "D. 1.0 mol dm⁻³"
+                ],
+                correct: 1
+            },
+            {
+                number: 30,
+                text: "A limiting reagent problem: 4.0 g of CH₄ reacts with 8.0 g of O₂ in the reaction CH₄ + 2O₂ → CO₂ + 2H₂O. The limiting reagent is:",
+                marks: 1,
+                options: [
+                    "A. CH₄",
+                    "B. O₂",
+                    "C. Both are limiting",
+                    "D. Neither is limiting"
+                ],
+                correct: 1
+            },
+
+            // Bonding & Structure (15 questions)
+            {
+                number: 31,
+                text: "Which molecule would have the largest dipole moment?",
+                marks: 1,
+                options: [
+                    "A. BF₃",
+                    "B. NH₃",
+                    "C. CCl₄",
+                    "D. CO₂"
+                ],
+                correct: 1
+            },
+            {
+                number: 32,
+                text: "The bond angle in ClF₃ (T-shaped) is closest to:",
+                marks: 1,
+                options: [
+                    "A. 90°",
+                    "B. 87°",
+                    "C. 120°",
+                    "D. 109.5°"
+                ],
+                correct: 1
+            },
+            {
+                number: 33,
+                text: "Which statement about hydrogen bonding is correct?",
+                marks: 1,
+                options: [
+                    "A. It only occurs between H and O atoms",
+                    "B. It is stronger than all covalent bonds",
+                    "C. It requires H to be bonded to N, O, or F",
+                    "D. It is purely electrostatic attraction"
+                ],
+                correct: 2
+            },
+            {
+                number: 34,
+                text: "The hybridisation of the central atom in SF₄ is:",
+                marks: 1,
+                options: [
+                    "A. sp³",
+                    "B. sp³d",
+                    "C. sp³d²",
+                    "D. sp²"
+                ],
+                correct: 1
+            },
+            {
+                number: 35,
+                text: "Which compound has the highest lattice energy?",
+                marks: 1,
+                options: [
+                    "A. NaCl",
+                    "B. MgO",
+                    "C. CaF₂",
+                    "D. KBr"
+                ],
+                correct: 1
+            },
+            {
+                number: 36,
+                text: "The shape of ICl₄⁻ is:",
+                marks: 1,
+                options: [
+                    "A. Tetrahedral",
+                    "B. Square planar",
+                    "C. See-saw",
+                    "D. Square pyramidal"
+                ],
+                correct: 1
+            },
+            {
+                number: 37,
+                text: "Which property is NOT characteristic of metallic bonding?",
+                marks: 1,
+                options: [
+                    "A. Electrical conductivity",
+                    "B. Malleability",
+                    "C. High melting point",
+                    "D. Directional bonding"
+                ],
+                correct: 3
+            },
+            {
+                number: 38,
+                text: "The boiling points of the hydrogen halides increase from HCl to HI because:",
+                marks: 1,
+                options: [
+                    "A. Hydrogen bonding increases",
+                    "B. London dispersion forces increase",
+                    "C. Ionic character increases",
+                    "D. Molecular polarity increases"
+                ],
+                correct: 1
+            },
+            {
+                number: 39,
+                text: "Which molecule has lone pairs on the central atom but is nonpolar?",
+                marks: 1,
+                options: [
+                    "A. NH₃",
+                    "B. H₂O",
+                    "C. XeF₄",
+                    "D. SF₄"
+                ],
+                correct: 2
+            },
+            {
+                number: 40,
+                text: "The bond order in the carbonate ion CO₃²⁻ is:",
+                marks: 1,
+                options: [
+                    "A. 1",
+                    "B. 1.33",
+                    "C. 1.5",
+                    "D. 2"
+                ],
+                correct: 1
+            },
+            {
+                number: 41,
+                text: "Which substance would have the highest electrical conductivity when molten?",
+                marks: 1,
+                options: [
+                    "A. Diamond",
+                    "B. Silicon dioxide",
+                    "C. Sodium chloride",
+                    "D. Copper metal"
+                ],
+                correct: 3
+            },
+            {
+                number: 42,
+                text: "The electronegativity difference between atoms in a polar covalent bond is typically:",
+                marks: 1,
+                options: [
+                    "A. 0 to 0.4",
+                    "B. 0.4 to 1.8",
+                    "C. 1.8 to 3.0",
+                    "D. Greater than 3.0"
+                ],
+                correct: 1
+            },
+            {
+                number: 43,
+                text: "Van der Waals forces include all of the following EXCEPT:",
+                marks: 1,
+                options: [
+                    "A. London dispersion forces",
+                    "B. Dipole-dipole interactions",
+                    "C. Hydrogen bonding",
+                    "D. Covalent bonding"
+                ],
+                correct: 3
+            },
+            {
+                number: 44,
+                text: "The coordinate covalent bond in NH₄⁺ forms when:",
+                marks: 1,
+                options: [
+                    "A. NH₃ shares electrons equally with H⁺",
+                    "B. NH₃ donates a lone pair to H⁺",
+                    "C. H⁺ donates electrons to NH₃",
+                    "D. Electrons are transferred from N to H"
+                ],
+                correct: 1
+            },
+            {
+                number: 45,
+                text: "Which factor most affects the strength of London dispersion forces?",
+                marks: 1,
+                options: [
+                    "A. Molecular polarity",
+                    "B. Number of electrons",
+                    "C. Molecular shape",
+                    "D. Electronegativity difference"
+                ],
+                correct: 1
+            },
+
+            // Energetics & Kinetics (15 questions)
+            {
+                number: 46,
+                text: "Using the data: C(s) → C(g) ΔH = +715 kJ mol⁻¹, H₂(g) → 2H(g) ΔH = +436 kJ mol⁻¹, C(g) + 4H(g) → CH₄(g) ΔH = -1660 kJ mol⁻¹. The standard enthalpy of formation of methane is:",
+                marks: 1,
+                options: [
+                    "A. -75 kJ mol⁻¹",
+                    "B. -509 kJ mol⁻¹",
+                    "C. +75 kJ mol⁻¹",
+                    "D. -1660 kJ mol⁻¹"
+                ],
+                correct: 0
+            },
+            {
+                number: 47,
+                text: "The activation energy for a reaction can be determined from:",
+                marks: 1,
+                options: [
+                    "A. The enthalpy change",
+                    "B. The Arrhenius equation using rate constants at different temperatures",
+                    "C. The equilibrium constant",
+                    "D. The reaction mechanism"
+                ],
+                correct: 1
+            },
+            {
+                number: 48,
+                text: "For the Maxwell-Boltzmann distribution, increasing temperature:",
+                marks: 1,
+                options: [
+                    "A. Shifts the peak to higher energies and increases the area under the curve",
+                    "B. Shifts the peak to higher energies but keeps the same area under the curve",
+                    "C. Keeps the peak position the same but increases the area",
+                    "D. Decreases the average kinetic energy"
+                ],
+                correct: 1
+            },
+            {
+                number: 49,
+                text: "The rate equation for the reaction A + 2B → products is rate = k[A][B]². If [A] is doubled and [B] is tripled, the new rate is:",
+                marks: 1,
+                options: [
+                    "A. 6 times the original rate",
+                    "B. 12 times the original rate",
+                    "C. 18 times the original rate",
+                    "D. 36 times the original rate"
+                ],
+                correct: 2
+            },
+            {
+                number: 50,
+                text: "A catalyst increases reaction rate by:",
+                marks: 1,
+                options: [
+                    "A. Increasing the energy of reactants",
+                    "B. Providing an alternative pathway with lower activation energy",
+                    "C. Increasing the enthalpy change",
+                    "D. Changing the equilibrium position"
+                ],
+                correct: 1
+            },
+            {
+                number: 51,
+                text: "Born-Haber cycles are used to calculate:",
+                marks: 1,
+                options: [
+                    "A. Bond enthalpies",
+                    "B. Lattice energies",
+                    "C. Activation energies",
+                    "D. Reaction rates"
+                ],
+                correct: 1
+            },
+            {
+                number: 52,
+                text: "The enthalpy of combustion of ethane is -1560 kJ mol⁻¹. How much heat is released when 15 g of ethane burns completely? (Mr of C₂H₆ = 30)",
+                marks: 1,
+                options: [
+                    "A. 468 kJ",
+                    "B. 780 kJ",
+                    "C. 1040 kJ",
+                    "D. 1560 kJ"
+                ],
+                correct: 1
+            },
+            {
+                number: 53,
+                text: "Which factor does NOT affect reaction rate?",
+                marks: 1,
+                options: [
+                    "A. Temperature",
+                    "B. Concentration",
+                    "C. Enthalpy change",
+                    "D. Surface area"
+                ],
+                correct: 2
+            },
+            {
+                number: 54,
+                text: "The order of reaction with respect to A in the rate equation rate = k[A]³[B] is:",
+                marks: 1,
+                options: [
+                    "A. 1",
+                    "B. 2",
+                    "C. 3",
+                    "D. 4"
+                ],
+                correct: 2
+            },
+            {
+                number: 55,
+                text: "Standard conditions for enthalpy measurements are:",
+                marks: 1,
+                options: [
+                    "A. 0°C and 1 atm",
+                    "B. 25°C and 1 bar",
+                    "C. 100°C and 1 atm",
+                    "D. STP conditions"
+                ],
+                correct: 1
+            },
+            {
+                number: 56,
+                text: "The half-life of a first-order reaction is independent of:",
+                marks: 1,
+                options: [
+                    "A. The rate constant",
+                    "B. The initial concentration",
+                    "C. Temperature",
+                    "D. The nature of the reactant"
+                ],
+                correct: 1
+            },
+            {
+                number: 57,
+                text: "Lattice energy is the energy required to:",
+                marks: 1,
+                options: [
+                    "A. Form an ionic solid from gaseous ions",
+                    "B. Break apart an ionic solid into gaseous ions",
+                    "C. Ionise atoms in the gas phase",
+                    "D. Form ions from atoms"
+                ],
+                correct: 1
+            },
+            {
+                number: 58,
+                text: "The enthalpy of atomisation is:",
+                marks: 1,
+                options: [
+                    "A. Always endothermic",
+                    "B. Always exothermic",
+                    "C. Sometimes endothermic, sometimes exothermic",
+                    "D. Zero for elements"
+                ],
+                correct: 0
+            },
+            {
+                number: 59,
+                text: "Which process is always exothermic?",
+                marks: 1,
+                options: [
+                    "A. Bond breaking",
+                    "B. Bond formation",
+                    "C. Ionisation",
+                    "D. Vaporisation"
+                ],
+                correct: 1
+            },
+            {
+                number: 60,
+                text: "The collision theory states that for a reaction to occur, particles must collide with:",
+                marks: 1,
+                options: [
+                    "A. Any energy",
+                    "B. The activation energy or greater",
+                    "C. The correct orientation only",
+                    "D. Both sufficient energy and correct orientation"
+                ],
+                correct: 3
+            },
+
+            // Additional Challenging Questions (61-80)
+            {
+                number: 61,
+                text: "A compound has the molecular formula C₄H₁₀O. How many structural isomers are possible?",
+                marks: 1,
+                options: [
+                    "A. 5",
+                    "B. 6",
+                    "C. 7",
+                    "D. 8"
+                ],
+                correct: 2
+            },
+            {
+                number: 62,
+                text: "The equilibrium constant Kc for the reaction 2A(g) + B(g) ⇌ C(g) + D(g) at 500K is 25. If the concentrations are [A] = 0.2 mol dm⁻³, [B] = 0.1 mol dm⁻³, [C] = 0.4 mol dm⁻³, [D] = 0.1 mol dm⁻³, what is the reaction quotient Qc?",
+                marks: 1,
+                options: [
+                    "A. 10",
+                    "B. 25",
+                    "C. 40",
+                    "D. 100"
+                ],
+                correct: 0
+            },
+            {
+                number: 63,
+                text: "The thermal decomposition of Group 2 carbonates becomes easier down the group because:",
+                marks: 1,
+                options: [
+                    "A. The cations become smaller",
+                    "B. The cations become larger and less polarizing",
+                    "C. The carbonates become more ionic",
+                    "D. The lattice energy increases"
+                ],
+                correct: 1
+            },
+            {
+                number: 64,
+                text: "Which reaction produces chlorine gas?",
+                marks: 1,
+                options: [
+                    "A. NaCl + H₂SO₄",
+                    "B. MnO₂ + HCl",
+                    "C. Cl₂ + NaOH",
+                    "D. AgCl + NH₃"
+                ],
+                correct: 1
+            },
+            {
+                number: 65,
+                text: "The first ionization energy increases across Period 3 because:",
+                marks: 1,
+                options: [
+                    "A. Atomic radius increases",
+                    "B. Nuclear charge increases while shielding remains similar",
+                    "C. More electron shells are added",
+                    "D. Electrons are easier to remove"
+                ],
+                correct: 1
+            },
+            {
+                number: 66,
+                text: "Magnesium burns in nitrogen to form:",
+                marks: 1,
+                options: [
+                    "A. MgN",
+                    "B. Mg₂N₃",
+                    "C. Mg₃N₂",
+                    "D. MgN₂"
+                ],
+                correct: 2
+            },
+            {
+                number: 67,
+                text: "The reaction between chlorine and cold dilute sodium hydroxide produces:",
+                marks: 1,
+                options: [
+                    "A. NaCl and NaClO only",
+                    "B. NaCl, NaClO and H₂O",
+                    "C. NaCl and NaClO₃",
+                    "D. NaClO₃ and H₂O only"
+                ],
+                correct: 1
+            },
+            {
+                number: 68,
+                text: "Which test distinguishes between Cl⁻, Br⁻, and I⁻ ions?",
+                marks: 1,
+                options: [
+                    "A. Add dilute HNO₃ then AgNO₃",
+                    "B. Add concentrated H₂SO₄",
+                    "C. Add NaOH solution",
+                    "D. Add dilute HCl"
+                ],
+                correct: 0
+            },
+            {
+                number: 69,
+                text: "The periodic trend in atomic radius down Group 2 is caused by:",
+                marks: 1,
+                options: [
+                    "A. Increasing nuclear charge",
+                    "B. Decreasing shielding",
+                    "C. Increasing number of electron shells",
+                    "D. Decreasing number of electrons"
+                ],
+                correct: 2
+            },
+            {
+                number: 70,
+                text: "Calcium oxide reacts with water to form:",
+                marks: 1,
+                options: [
+                    "A. Ca(OH)₂",
+                    "B. CaH₂",
+                    "C. CaCO₃",
+                    "D. Ca(NO₃)₂"
+                ],
+                correct: 0
+            },
+            {
+                number: 71,
+                text: "The most abundant gas in air by volume is:",
+                marks: 1,
+                options: [
+                    "A. Oxygen",
+                    "B. Nitrogen",
+                    "C. Carbon dioxide",
+                    "D. Argon"
+                ],
+                correct: 1
+            },
+            {
+                number: 72,
+                text: "Which element shows the greatest increase in first ionization energy from its predecessor?",
+                marks: 1,
+                options: [
+                    "A. Lithium",
+                    "B. Boron",
+                    "C. Nitrogen",
+                    "D. Neon"
+                ],
+                correct: 0
+            },
+            {
+                number: 73,
+                text: "The solubility of Group 2 sulfates down the group:",
+                marks: 1,
+                options: [
+                    "A. Increases",
+                    "B. Decreases",
+                    "C. Remains constant",
+                    "D. First increases then decreases"
+                ],
+                correct: 1
+            },
+            {
+                number: 74,
+                text: "Which halogen would displace iodine from sodium iodide solution?",
+                marks: 1,
+                options: [
+                    "A. Fluorine and chlorine only",
+                    "B. Chlorine and bromine only",
+                    "C. Fluorine, chlorine and bromine",
+                    "D. None of them"
+                ],
+                correct: 2
+            },
+            {
+                number: 75,
+                text: "The electron affinity of Group 7 elements:",
+                marks: 1,
+                options: [
+                    "A. Increases down the group",
+                    "B. Decreases down the group",
+                    "C. Remains constant",
+                    "D. Is highest for fluorine"
+                ],
+                correct: 1
+            },
+            {
+                number: 76,
+                text: "Which Group 2 element has the smallest atomic radius?",
+                marks: 1,
+                options: [
+                    "A. Beryllium",
+                    "B. Magnesium",
+                    "C. Calcium",
+                    "D. Strontium"
+                ],
+                correct: 0
+            },
+            {
+                number: 77,
+                text: "The colour of chlorine gas is:",
+                marks: 1,
+                options: [
+                    "A. Colourless",
+                    "B. Yellow-green",
+                    "C. Orange",
+                    "D. Purple"
+                ],
+                correct: 1
+            },
+            {
+                number: 78,
+                text: "Which process is used to extract chlorine industrially?",
+                marks: 1,
+                options: [
+                    "A. Electrolysis of molten NaCl",
+                    "B. Electrolysis of brine",
+                    "C. Heating NaCl with H₂SO₄",
+                    "D. Reaction of HCl with MnO₂"
+                ],
+                correct: 1
+            },
+            {
+                number: 79,
+                text: "The bond angle in BeF₂ is:",
+                marks: 1,
+                options: [
+                    "A. 104.5°",
+                    "B. 109.5°",
+                    "C. 120°",
+                    "D. 180°"
+                ],
+                correct: 3
+            },
+            {
+                number: 80,
+                text: "Which statement about the trend in melting points of Group 2 elements is correct?",
+                marks: 1,
+                options: [
+                    "A. They increase down the group",
+                    "B. They decrease down the group",
+                    "C. They remain constant",
+                    "D. They first increase then decrease"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentAnswers = {};
+        let examStarted = false;
+        let timeRemaining = 90 * 60; // 90 minutes in seconds
+        let timerInterval;
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.style.display = 'block';
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                const displayTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                timerDisplay.textContent = `Time Remaining: ${displayTime}`;
+                
+                if (timeRemaining <= 300) { // Last 5 minutes
+                    timerDisplay.className = 'timer-display timer-critical';
+                } else if (timeRemaining <= 900) { // Last 15 minutes
+                    timerDisplay.className = 'timer-display timer-warning';
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmit();
+                }
+            }, 1000);
+        }
+
+        function startExam() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('examContent').classList.add('active');
+            document.getElementById('controls').style.display = 'block';
+            examStarted = true;
+            startTimer();
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exam_started', {
+                    'event_category': 'Exam',
+                    'event_label': 'Advanced AS Chemistry Quiz Started'
+                });
+            }
+        }
+
+        function autoSubmit() {
+            alert('Time is up! Your exam will be automatically submitted.');
+            submitExam();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="question-header">
+                        <span class="question-number">${q.number}.</span>
+                        <span class="question-marks">[${q.marks} mark]</span>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option">
+                                <input type="radio" id="q${index}_opt${optIndex}" name="q${index}" value="${optIndex}">
+                                <label for="q${index}_opt${optIndex}">${option}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback" id="feedback-${index}"></div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function updateProgress() {
+            const answeredQuestions = Object.keys(currentAnswers).length;
+            const progressPercent = (answeredQuestions / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+        }
+
+        function getGrade(percentage) {
+            // June 2024 AQA AS Chemistry grade boundaries (out of 160 marks)
+            // Converted to percentages for our 80-question quiz
+            if (percentage >= 72) return 'A';  // 115/160 = 72%
+            if (percentage >= 64) return 'B';  // 102/160 = 64%
+            if (percentage >= 56) return 'C';  // 89/160 = 56%  
+            if (percentage >= 48) return 'D';  // 77/160 = 48%
+            if (percentage >= 41) return 'E';  // 65/160 = 41%
+            return 'U';
+        }
+
+        function getGradeColor(grade) {
+            const colors = {
+                'A': '#4caf50', 'B': '#66bb6a', 'C': '#8bc34a', 
+                'D': '#ffc107', 'E': '#ff9800', 'U': '#f44336'
+            };
+            return colors[grade] || '#666';
+        }
+
+        function submitExam() {
+            // Collect all answers
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected) {
+                    currentAnswers[index] = parseInt(selected.value);
+                }
+            });
+
+            // Calculate score
+            let correctCount = 0;
+            questions.forEach((q, index) => {
+                if (currentAnswers[index] === q.correct) {
+                    correctCount++;
+                }
+            });
+
+            const percentage = Math.round((correctCount / questions.length) * 100);
+            const grade = getGrade(percentage);
+            const gradeColor = getGradeColor(grade);
+
+            // Show results
+            document.getElementById('examContent').classList.remove('active');
+            document.getElementById('controls').style.display = 'none';
+            document.getElementById('results').classList.add('active');
+            
+            document.getElementById('scoreDisplay').textContent = 
+                `${correctCount} / ${questions.length} marks (${percentage}%)`;
+            
+            document.getElementById('gradeDisplay').innerHTML = 
+                `<span style="color: ${gradeColor};">Grade: ${grade}</span>`;
+            document.getElementById('gradeDisplay').style.backgroundColor = 
+                gradeColor + '20';
+
+            // Stop timer
+            clearInterval(timerInterval);
+            document.getElementById('timerDisplay').style.display = 'none';
+
+            // Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exam_completed', {
+                    'event_category': 'Exam',
+                    'event_label': `Advanced AS Chemistry - Grade: ${grade} (${percentage}%)`,
+                    'value': percentage
+                });
+            }
+        }
+
+        function showReview() {
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('examContent').classList.add('active');
+            
+            // Show feedback for all questions
+            questions.forEach((q, index) => {
+                const feedbackDiv = document.getElementById(`feedback-${index}`);
+                const userAnswer = currentAnswers[index];
+                const isCorrect = userAnswer === q.correct;
+                
+                if (userAnswer !== undefined) {
+                    feedbackDiv.innerHTML = `
+                        <div class="${isCorrect ? 'correct' : 'incorrect'}">
+                            ${isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                            ${!isCorrect ? `<br>Correct answer: ${q.options[q.correct]}` : ''}
+                        </div>
+                    `;
+                }
+            });
+
+            // Disable all inputs
+            const inputs = document.querySelectorAll('input[type="radio"]');
+            inputs.forEach(input => input.disabled = true);
+        }
+
+        function resetExam() {
+            if (confirm('Are you sure you want to reset the exam? All progress will be lost.')) {
+                location.reload();
+            }
+        }
+
+        // Event listeners
+        document.getElementById('startExamBtn').addEventListener('click', startExam);
+        document.getElementById('submitExam').addEventListener('click', submitExam);
+
+        // Track answers for progress
+        document.addEventListener('change', (e) => {
+            if (e.target.type === 'radio') {
+                updateProgress();
+            }
+        });
+
+        // Initialize
+        renderQuestions();
+    </script>
+</body>
+</html>
